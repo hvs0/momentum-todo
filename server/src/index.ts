@@ -1,6 +1,7 @@
 import { createApp } from './app';
 import { connectDatabase, disconnectDatabase } from './config/db';
 import { assertProductionSafety, env } from './config/env';
+import { startKeepAwake } from './utils/keepAwake';
 
 async function bootstrap() {
   assertProductionSafety();
@@ -12,6 +13,7 @@ async function bootstrap() {
   const server = app.listen(env.port, () => {
     console.log(`[api] listening on http://localhost:${env.port}/api`);
     console.log('[api] android emulator should use http://10.0.2.2:' + env.port + '/api');
+    startKeepAwake();
   });
 
   const shutdown = async (signal: string) => {
