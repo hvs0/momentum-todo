@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
-import { configureApiClient, setApiBaseUrl } from './api/client';
+import { configureApiClient } from './api/client';
 import { store } from './app/store';
 import { restoreSession, sessionExpired, tokensRefreshed } from './features/auth/authSlice';
 import { RootNavigator } from './navigation/RootNavigator';
 import { clearSession, saveSession } from './storage/session';
-import { loadServerUrl } from './storage/serverUrl';
 import { ThemeProvider } from './theme';
 
 configureApiClient({
@@ -30,12 +29,7 @@ configureApiClient({
 
 function Bootstrapper() {
   useEffect(() => {
-    loadServerUrl()
-      .then((url) => setApiBaseUrl(url))
-      .catch(() => undefined)
-      .finally(() => {
-        store.dispatch(restoreSession());
-      });
+    store.dispatch(restoreSession());
   }, []);
 
   return <RootNavigator />;

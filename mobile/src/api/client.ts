@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
-import { DEFAULT_API_BASE_URL, normaliseBaseUrl, REQUEST_TIMEOUT_MS } from '../config';
+import { DEFAULT_API_BASE_URL, REQUEST_TIMEOUT_MS } from '../config';
 import { ApiEnvelope } from '../types';
 
 type TokenGetter = () => { accessToken: string | null; refreshToken: string | null };
@@ -10,23 +10,11 @@ let getTokens: TokenGetter = () => ({ accessToken: null, refreshToken: null });
 let onTokensRefreshed: TokenSetter = () => {};
 let onSessionExpired: SessionExpiredHandler = () => {};
 
-let baseUrl = DEFAULT_API_BASE_URL;
-
 export const api = axios.create({
-  baseURL: baseUrl,
+  baseURL: DEFAULT_API_BASE_URL,
   timeout: REQUEST_TIMEOUT_MS,
   headers: { 'Content-Type': 'application/json' },
 });
-
-export function setApiBaseUrl(url: string): string {
-  baseUrl = normaliseBaseUrl(url);
-  api.defaults.baseURL = baseUrl;
-  return baseUrl;
-}
-
-export function getApiBaseUrl(): string {
-  return baseUrl;
-}
 
 export function configureApiClient(options: {
   getTokens: TokenGetter;
@@ -36,22 +24,6 @@ export function configureApiClient(options: {
   getTokens = options.getTokens;
   onTokensRefreshed = options.onTokensRefreshed;
   onSessionExpired = options.onSessionExpired;
-}
-
-export async function pingServer(url: string): Promise<{ ok: boolean; message: string }> {
-  const target = normaliseBaseUrl(url);
-
-  try {
-    const response = await axios.get(target + '/health', { timeout: 30000 });
-
-    if (response.data?.data?.status === 'ok') {
-      return { ok: true, message: 'Connected to ' + target };
-    }
-
-    return { ok: false, message: 'That server answered but is not the To-Do API' };
-  } catch (error) {
-    return { ok: false, message: readErrorMessage(error, 'Could not reach ' + target) };
-  }
 }
 
 api.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -72,7 +44,7 @@ async function refreshAccessToken(): Promise<string | null> {
 
   try {
     const response = await axios.post(
-      baseUrl + '/auth/refresh',
+      DEFAULT_API_BASE_URL + '/auth/refresh',
       { refreshToken },
       { timeout: REQUEST_TIMEOUT_MS, headers: { 'Content-Type': 'application/json' } },
     );

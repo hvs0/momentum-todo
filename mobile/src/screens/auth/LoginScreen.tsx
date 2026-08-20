@@ -96,10 +96,6 @@ export function LoginScreen({ navigation }: Props) {
           <Text style={[styles.footerLink, { color: colors.accent }]}>Create an account</Text>
         </Pressable>
       </View>
-
-      <Pressable onPress={() => navigation.navigate('Server')} hitSlop={8} style={styles.serverRow}>
-        <Text style={[styles.serverLink, { color: colors.textFaint }]}>Change server address</Text>
-      </Pressable>
     </AuthLayout>
   );
 }
@@ -119,12 +115,5 @@ const styles = StyleSheet.create({
   },
   footerLink: {
     ...typography.caption,
-  },
-  serverRow: {
-    alignItems: 'center',
-  },
-  serverLink: {
-    ...typography.caption,
-    textDecorationLine: 'underline',
   },
 });

@@ -10,7 +10,6 @@ import { TaskListScreen } from '../screens/tasks/TaskListScreen';
 import { TaskFormScreen } from '../screens/tasks/TaskFormScreen';
 import { TaskDetailScreen } from '../screens/tasks/TaskDetailScreen';
 import { BootScreen } from '../screens/BootScreen';
-import { ServerScreen } from '../screens/ServerScreen';
 import { InsightsScreen } from '../screens/tasks/InsightsScreen';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
@@ -21,7 +20,6 @@ function AuthFlow() {
     <AuthStack.Navigator screenOptions={{ headerShown: false, animation: 'fade' }}>
       <AuthStack.Screen name="Login" component={LoginScreen} />
       <AuthStack.Screen name="Register" component={RegisterScreen} />
-      <AuthStack.Screen name="Server" component={ServerScreen} />
     </AuthStack.Navigator>
   );
 }

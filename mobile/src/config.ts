@@ -1,5 +1,6 @@
 import { NativeModules, Platform } from 'react-native';
 
+const HOSTED_API_URL = 'https://momentum-api-9osq.onrender.com/api';
 const LAN_HOST = '192.168.1.3';
 const EMULATOR_HOST = '10.0.2.2';
 const PORT = 4000;
@@ -16,17 +17,17 @@ function metroHost(): string | null {
 }
 
 function resolveHost(): string {
-  if (!__DEV__) return LAN_HOST;
-
   const fromMetro = metroHost();
   if (fromMetro && fromMetro !== 'localhost' && fromMetro !== '127.0.0.1') {
     return fromMetro;
   }
 
-  return Platform.OS === 'android' ? EMULATOR_HOST : 'localhost';
+  return Platform.OS === 'android' ? EMULATOR_HOST : LAN_HOST;
 }
 
-export const DEFAULT_API_BASE_URL = 'http://' + resolveHost() + ':' + PORT + '/api';
+export const DEFAULT_API_BASE_URL = __DEV__
+  ? 'http://' + resolveHost() + ':' + PORT + '/api'
+  : HOSTED_API_URL;
 
 export const REQUEST_TIMEOUT_MS = 30000;
 

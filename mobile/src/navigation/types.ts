@@ -3,7 +3,6 @@ import { Task } from '../types';
 export type AuthStackParamList = {
   Login: undefined;
   Register: undefined;
-  Server: undefined;
 };
 
 export type AppStackParamList = {
