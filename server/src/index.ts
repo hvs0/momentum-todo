@@ -25,7 +25,19 @@ async function bootstrap() {
   process.on('SIGTERM', () => void shutdown('SIGTERM'));
 }
 
-bootstrap().catch((error) => {
-  console.error('[api] failed to start', error);
+bootstrap().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  const lowered = message.toLowerCase();
+  console.error('[api] STARTUP FAILED: ' + message);
+
+  if (lowered.includes('econnrefused') || lowered.includes('etimedout') || lowered.includes('server selection')) {
+    console.error('[api] The database refused the connection.');
+    console.error('[api] In MongoDB Atlas open Network Access and allow 0.0.0.0/0 so the host can reach it.');
+  }
+
+  if (lowered.includes('authentication failed') || lowered.includes('bad auth')) {
+    console.error('[api] The database rejected the credentials. Check the user and password in MONGO_URI.');
+  }
+
   process.exit(1);
 });
