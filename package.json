@@ -1,0 +1,15 @@
+{
+  "name": "rn-todo-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "api": "npm --prefix server run dev",
+    "api:build": "npm --prefix server run build",
+    "android": "npm --prefix mobile run android",
+    "metro": "npm --prefix mobile start",
+    "test": "npm --prefix mobile test",
+    "lint": "npm --prefix mobile run lint",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix mobile exec tsc -- --noEmit",
+    "setup": "npm --prefix server install && npm --prefix mobile install"
+  }
+}

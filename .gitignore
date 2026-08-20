@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+*.log
+.DS_Store
+
+mobile/android/local.properties
+mobile/android/keystore.properties
+mobile/android/app/*.keystore
+!mobile/android/app/debug.keystore
+mobile/android/.gradle/
+mobile/android/app/build/
+mobile/android/build/
+mobile/ios/Pods/
+mobile/vendor/
+
+deliverables/
