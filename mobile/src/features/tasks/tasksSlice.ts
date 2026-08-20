@@ -47,10 +47,10 @@ const initialState: TasksState = {
 export const fetchTasks = createAsyncThunk<
   Task[],
   { refreshing?: boolean } | undefined,
-  { state: { tasks: TasksState }; rejectValue: string }
->('tasks/fetch', async (_arg, { getState, rejectWithValue }) => {
+  { rejectValue: string }
+>('tasks/fetch', async (_arg, { rejectWithValue }) => {
   try {
-    return await fetchTasksRequest(getState().tasks.filters);
+    return await fetchTasksRequest({});
   } catch (error) {
     return rejectWithValue(readErrorMessage(error, 'Could not load your tasks'));
   }
